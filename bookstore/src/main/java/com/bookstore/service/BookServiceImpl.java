@@ -60,6 +60,10 @@ public class BookServiceImpl implements BookService {
 		return null;
 	}
 
+	/**
+	 * This method first finds the book title by its isbn number
+	 * It then searches the elastic db for the title
+	 */
 	@Override
 	public List<String> searchMediaCoverage(Long isbn) {
 		getMediaCoverPosts();
@@ -67,11 +71,16 @@ public class BookServiceImpl implements BookService {
 		Book book = bookRepository.findByIsbn(isbn);
 		if (book != null) {
 			String title = book.getTitle();
+			// Searches the elastic db for the book title
 			postRepository.findPostsBySearchQuery(title).forEach(post -> list.add(post.getTitle()));
 		}
 		return list;
 	}
 
+	/**
+	 * This method hits the api "https://jsonplaceholder.typicode.com/posts" and
+	 * parses the json response It then saves the data into the elasticsearch db
+	 */
 	private void getMediaCoverPosts() {
 		RestTemplate externalAPI = new RestTemplate();
 		Post[] posts = externalAPI.getForObject("https://jsonplaceholder.typicode.com/posts", Post[].class);
