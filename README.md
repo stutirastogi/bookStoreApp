@@ -26,6 +26,9 @@ elasticsearch - 7.x.x
     $ docker-compose up
 
   This will start the elasticsearch server and mysql service. Application will start running at http://localhost:8080.
+  
+  <h4>Note:<h4> For now I have disabled the unit tests since they were causing issues in docker. To enable the same, go to pom.xml 
+    and remove line <maven.test.skip>true</maven.test.skip> inside <properties> tag
 
 <h3>Explore Rest APIs</h3>
 
