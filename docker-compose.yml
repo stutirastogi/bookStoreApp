@@ -1,0 +1,57 @@
+version: '2.1'
+
+# Define services
+services:
+  # App backend service
+  app:
+    # Configuration for building the docker image for the backend service
+    build:
+      context: bookstore # Use an image built from the specified dockerfile in the `book-store` directory.
+      dockerfile: DockerFile
+    ports:
+      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    restart: always
+    depends_on: 
+      - db # This service depends on mysql. Start that first.
+      - elasticsearch
+    environment: # Pass environment variables to the service
+     SPRING.DATASOURCE.URL : jdbc:mysql://localhost:3306/book_store?serverTimezone=UTC&useLegacyDatetimeCode=false
+     SPRING.DATASOURCE.USERNAME : root
+     SPRING.DATASOURCE.PASSWORD : stuti     
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - backend
+      - frontend
+
+
+  # Database Service (Mysql)
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: book_store
+      MYSQL_USER: root
+      MYSQL_PASSWORD: stuti
+      MYSQL_ROOT_PASSWORD: stuti
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend 
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+
+    ports:
+      - "9200:9200"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"      
+  
+# Volumes
+volumes:
+  db-data:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:
+  frontend:    
