@@ -27,7 +27,7 @@ elasticsearch - 7.x.x
 
   This will start the elasticsearch server and mysql service. Application will start running at http://localhost:8080.
   
-  <h4>Note:<h4> 
+  <h4>Note:</h4> 
     For now I have disabled the unit tests since they were causing issues in docker. To enable the same, go to pom.xml 
     and remove line maven.test.skip inside properties tag
 
