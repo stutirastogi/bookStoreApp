@@ -1,17 +1,14 @@
 package com.bookstore.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.bookstore.model.Book;
-import com.bookstore.model.Post;
 import com.bookstore.repository.elastic.PostRepository;
 import com.bookstore.repository.jpa.BookRepository;
 
@@ -66,7 +63,6 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	public List<String> searchMediaCoverage(Long isbn) {
-		getMediaCoverPosts();
 		List<String> list = new ArrayList<>();
 		Book book = bookRepository.findByIsbn(isbn);
 		if (book != null) {
@@ -75,16 +71,6 @@ public class BookServiceImpl implements BookService {
 			postRepository.findPostsBySearchQuery(title).forEach(post -> list.add(post.getTitle()));
 		}
 		return list;
-	}
-
-	/**
-	 * This method hits the api "https://jsonplaceholder.typicode.com/posts" and
-	 * parses the json response It then saves the data into the elasticsearch db
-	 */
-	private void getMediaCoverPosts() {
-		RestTemplate externalAPI = new RestTemplate();
-		Post[] posts = externalAPI.getForObject("https://jsonplaceholder.typicode.com/posts", Post[].class);
-		postRepository.saveAll(Arrays.asList(posts));
 	}
 
 }
