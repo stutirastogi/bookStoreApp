@@ -12,36 +12,41 @@ import com.bookstore.model.Book;
 public interface BookService {
 
 	/**
+	 * Save the book object
 	 * 
 	 * @param book
 	 * @return
 	 */
-	public Book save(Book book);
+	Book save(Book book);
 
 	/**
+	 * Search book given it's isbn/title/author
 	 * 
 	 * @param isbn
 	 * @param title
 	 * @param author
 	 * @return
 	 */
-	public List<Book> searchBook(Long isbn, String title, String author);
+	List<Book> searchBook(Long isbn, String title, String author);
 
 	/**
+	 * Buy a book given it's isbn number
 	 * 
 	 * @param isbn
 	 * @return
 	 */
-	public Book buyBook(Long isbn);
+	Book buyBook(Long isbn);
 
 	/**
+	 * Search media coverage of a book given it's isbn number
 	 * 
 	 * @param title
 	 * @return
 	 */
-	public List<String> searchMediaCoverage(Long isbn);
-	
+	List<String> searchMediaCoverage(Long isbn);
+
 	/**
+	 * Fetch a book by its isbn number
 	 * 
 	 * @param isbn
 	 * @return
